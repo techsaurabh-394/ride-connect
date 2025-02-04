@@ -130,32 +130,36 @@ export default function CustomerDashboard() {
             <CardTitle>Recent Rides</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {bookingHistory.map((booking) => (
-                <div
-                  key={booking._id}
-                  className="flex items-center justify-between border-b pb-4"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-500">
-                        {new Date(booking.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <MapPin className="h-4 w-4 text-primary" />
-                      <span>{booking.dropoffLocation.address}</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold">${booking.price}</div>
-                    <div className="text-sm text-gray-500">{booking.status}</div>
-                  </div>
-                </div>
-              ))}
+  <div className="space-y-4">
+    {Array.isArray(bookingHistory) && bookingHistory.length > 0 ? (
+      bookingHistory.map((booking) => (
+        <div
+          key={booking._id}
+          className="flex items-center justify-between border-b pb-4"
+        >
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <Clock className="h-4 w-4 text-gray-500" />
+              <span className="text-sm text-gray-500">
+                {new Date(booking.createdAt).toLocaleDateString()}
+              </span>
             </div>
-          </CardContent>
+            <div className="flex items-center space-x-2">
+              <MapPin className="h-4 w-4 text-primary" />
+              <span>{booking.dropoffLocation.address}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="font-semibold">${booking.price}</div>
+            <div className="text-sm text-gray-500">{booking.status}</div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <div>No bookings found</div> // Message to display if no bookings exist
+    )}
+  </div>
+</CardContent>
         </Card>
       </div>
     </div>

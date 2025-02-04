@@ -26,18 +26,29 @@ import {
 
 export default function Register() {
   const router = useRouter()
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm()
+  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [role, setRole] = useState('customer') // default role
+  const [licenseNumber, setLicenseNumber] = useState('')
 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true)
-      
+
+      const payload = { ...data, role }
+
+      // If the user is a driver, include the licenseNumber
+      if (role === 'driver') {
+        payload.licenseNumber = licenseNumber
+      }
+
+      // Log payload for debugging
+      console.log(payload)
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, role }), // Include role
+        body: JSON.stringify(payload),
       })
 
       const result = await response.json()
@@ -120,6 +131,22 @@ export default function Register() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {role === 'driver' && (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="licenseNumber">License Number</Label>
+                    <Input
+                      id="licenseNumber"
+                      type="text"
+                      {...register('licenseNumber', { required: 'License number is required for drivers' })}
+                      value={licenseNumber}
+                      onChange={(e) => setLicenseNumber(e.target.value)}
+                    />
+                    {errors.licenseNumber && <p className="text-red-500 text-sm">{errors.licenseNumber.message}</p>}
+                  </div>
+                </>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>

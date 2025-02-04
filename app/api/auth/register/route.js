@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { connectDB } from '@/lib/db'
 import User from '@/models/User'
-import Driver from '@/models/Driver'
+import Driver from '@/models/Driver';
 
 export async function POST(req) {
   try {
-    const { name, email, password, phone, role } = await req.json()
+    const { name, email, password, phone, role, licenseNumber } = await req.json()
 
-    if (!name || !email || !password || !phone || !role) {
+    if (!name || !email || !password || !phone || !role || (role === 'driver' && !licenseNumber)) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
     }
 
@@ -36,6 +36,7 @@ export async function POST(req) {
     if (role === 'driver') {
       await Driver.create({
         userId: user._id,
+        licenseNumber, // Add licenseNumber to the driver profile
         verificationStatus: 'pending',
       })
     }

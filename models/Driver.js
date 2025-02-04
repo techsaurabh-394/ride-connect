@@ -43,8 +43,9 @@ const driverSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-}, { timestamps: true })
+}, { timestamps: true });
 
-driverSchema.index({ currentLocation: '2dsphere' })
+driverSchema.index({ currentLocation: '2dsphere' });
 
-export default mongoose.models.Driver || mongoose.model('Driver', driverSchema)
+// Proper export
+export default mongoose.models.Driver || mongoose.model('Driver', driverSchema);
