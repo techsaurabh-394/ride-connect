@@ -33,13 +33,34 @@ export default function Login() {
       })
 
       if (result.error) {
-        throw new Error('Invalid credentials')
+        throw new Error(result.error)
       }
 
-      toast.success('Welcome back!')
-      router.push('/dashboard')
+      // Fetch the current session to get the user's role
+      const sessionResponse = await fetch('/api/auth/session')
+      const session = await sessionResponse.json()
+
+      // Redirect based on user role
+      switch (session.user.role) {
+        case 'admin':
+          router.push('/dashboard/admin')
+          toast.success('Welcome, Admin!')
+          break
+        case 'customer':
+          router.push('/dashboard/customer')
+          toast.success('Welcome back!')
+          break
+        case 'driver':
+          router.push('/dashboard/driver')
+          toast.success('Welcome, Driver!')
+          break
+        default:
+          // Fallback to a generic dashboard if role is not recognized
+          router.push('/dashboard')
+          toast.success('Welcome back!')
+      }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message || 'Login failed')
     } finally {
       setIsLoading(false)
     }

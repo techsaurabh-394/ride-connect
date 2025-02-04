@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 import { toast } from 'sonner'
 import {
   Users,
@@ -9,7 +10,6 @@ import {
   Clock,
   CheckCircle,
   XCircle,
-  AlertCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,7 +17,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card'
 import {
   Table,
@@ -27,9 +26,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
 
 export default function AdminDashboard() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/auth/login')
+    }
+  })
+
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalDrivers: 0,
@@ -38,12 +44,21 @@ export default function AdminDashboard() {
   })
   const [pendingDrivers, setPendingDrivers] = useState([])
   const [recentBookings, setRecentBookings] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchAdminStats()
-    fetchPendingDrivers()
-    fetchRecentBookings()
-  }, [session])
+    // Redirect if not an admin
+    if (status === 'authenticated' && session?.user?.role !== 'admin') {
+      redirect('/auth/login')
+    }
+
+    // Load all data
+    Promise.all([
+      fetchAdminStats(),
+      fetchPendingDrivers(),
+      fetchRecentBookings()
+    ]).finally(() => setIsLoading(false))
+  }, [session, status])
 
   const fetchAdminStats = async () => {
     try {
@@ -86,10 +101,32 @@ export default function AdminDashboard() {
       if (response.ok) {
         toast.success(`Driver ${status === 'approved' ? 'approved' : 'rejected'}`)
         fetchPendingDrivers()
+        fetchAdminStats()
       }
     } catch (error) {
       toast.error('Failed to update driver status')
     }
+  }
+
+  const getBookingStatusBadge = (status) => {
+    switch (status) {
+      case 'completed':
+        return <Badge variant="success">Completed</Badge>
+      case 'cancelled':
+        return <Badge variant="destructive">Cancelled</Badge>
+      case 'pending':
+        return <Badge variant="warning">Pending</Badge>
+      default:
+        return <Badge>{status}</Badge>
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div>Loading admin dashboard...</div>
+      </div>
+    )
   }
 
   return (
@@ -143,8 +180,8 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        {/* Pending Drivers */}
-        <Card className="md:col-span-2">
+         {/* Pending Drivers */}
+         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Pending Driver Verifications</CardTitle>
           </CardHeader>
