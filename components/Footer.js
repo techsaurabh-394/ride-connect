@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Car, Facebook, Instagram, Twitter } from 'lucide-react'
+import { Car, Facebook, Instagram, Twitter, Phone, Mail, MapPin } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -16,105 +16,107 @@ export default function Footer() {
               Your trusted ride-sharing platform connecting passengers with reliable
               drivers for safe and comfortable journeys.
             </p>
+            <div className="mt-4 flex items-center space-x-4 text-gray-400">
+              <Phone className="h-4 w-4" />
+              <span className="text-sm">1-800-RIDE-NOW</span>
+            </div>
+            <div className="mt-2 flex items-center space-x-4 text-gray-400">
+              <Mail className="h-4 w-4" />
+              <span className="text-sm">support@rideconnect.com</span>
+            </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Riders Section */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider">
-              Quick Links
+              For Riders
             </h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link
-                  href="/about"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  About Us
+                <Link href="/book-ride" className="text-gray-400 hover:text-white transition">
+                  Book a Ride
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/how-it-works"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  How It Works
+                <Link href="/customer/dashboard" className="text-gray-400 hover:text-white transition">
+                  My Rides
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Contact
+                <Link href="/customer/payments" className="text-gray-400 hover:text-white transition">
+                  Payment Options
+                </Link>
+              </li>
+              <li>
+                <Link href="/fare-calculator" className="text-gray-400 hover:text-white transition">
+                  Fare Calculator
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Drivers Section */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider">
-              Legal
+              For Drivers
             </h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Privacy Policy
+                <Link href="/driver/register" className="text-gray-400 hover:text-white transition">
+                  Become a Driver
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Terms of Service
+                <Link href="/driver/requirements" className="text-gray-400 hover:text-white transition">
+                  Requirements
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/cookies"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Cookie Policy
+                <Link href="/driver/earnings" className="text-gray-400 hover:text-white transition">
+                  Earnings
+                </Link>
+              </li>
+              <li>
+                <Link href="/driver/safety" className="text-gray-400 hover:text-white transition">
+                  Safety Guidelines
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Social */}
+          {/* Company & Social */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider">
               Connect With Us
             </h3>
             <div className="mt-4 flex space-x-4">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="#" className="text-gray-400 hover:text-white transition">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="#" className="text-gray-400 hover:text-white transition">
                 <Twitter className="h-6 w-6" />
               </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="#" className="text-gray-400 hover:text-white transition">
                 <Instagram className="h-6 w-6" />
               </a>
             </div>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-gray-400 hover:text-white transition">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/help" className="text-gray-400 hover:text-white transition">
+                  Help Center
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 

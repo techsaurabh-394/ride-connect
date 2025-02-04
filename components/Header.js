@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Car, Menu, X } from 'lucide-react'
-import { Button } from './ui/button'
+import { Car, Menu, X, UserCircle, MapPin, Bell } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,13 +12,16 @@ export default function Header() {
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'How it Works', href: '/how-it-works' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Book Ride', href: '/book' },
+    { name: 'Driver Portal', href: '/driver/requirements' },
+    { name: 'Customer Dashboard', href: '/dashboard/customer' },
   ]
 
+  const isCustomerRoute = pathname?.startsWith('/customer')
+  const isDriverRoute = pathname?.startsWith('/driver/register')
+
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
@@ -43,14 +46,27 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Link href="/auth/login">
-              <Button variant="outline" className="mr-2">
-                Login
-              </Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button>Sign Up</Button>
-            </Link>
+            
+            {!isCustomerRoute && !isDriverRoute ? (
+              <>
+                <Link href="/auth/login">
+                  <Button variant="outline" className="mr-2">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button>Sign Up</Button>
+                </Link>
+              </>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Bell className="h-6 w-6 text-gray-500 hover:text-primary cursor-pointer" />
+                <MapPin className="h-6 w-6 text-gray-500 hover:text-primary cursor-pointer" />
+                <Link href={isDriverRoute ? "/driver/profile" : "/customer/profile"}>
+                  <UserCircle className="h-6 w-6 text-gray-500 hover:text-primary cursor-pointer" />
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -88,16 +104,27 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              <div className="mt-4 space-y-2 px-3">
-                <Link href="/auth/login" className="block">
-                  <Button variant="outline" className="w-full">
-                    Login
-                  </Button>
-                </Link>
-                <Link href="/auth/register" className="block">
-                  <Button className="w-full">Sign Up</Button>
-                </Link>
-              </div>
+              
+              {!isCustomerRoute && !isDriverRoute ? (
+                <div className="mt-4 space-y-2 px-3">
+                  <Link href="/auth/login" className="block">
+                    <Button variant="outline" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/auth/register" className="block">
+                    <Button className="w-full">Sign Up</Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="mt-4 flex justify-around px-3">
+                  <Bell className="h-6 w-6 text-gray-500" />
+                  <MapPin className="h-6 w-6 text-gray-500" />
+                  <Link href={isDriverRoute ? "/driver/profile" : "/customer/profile"}>
+                    <UserCircle className="h-6 w-6 text-gray-500" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
