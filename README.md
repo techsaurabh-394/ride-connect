@@ -25,7 +25,7 @@ RideConnect is a full-stack ride-sharing platform that connects drivers and cust
 
 ## Tech Stack
 
-- **Frontend:** Next.js with React (JavaScript), optimized for SEO with server-side rendering.
+-**Frontend:** Next.js with React (JavaScript), optimized for SEO with server-side rendering. (See related blog: [Angular 18 vs Angular 17](https://mernstackdev.com/angular-18-vs-angular-17-changed-and-improved/))
 - **Backend:** Node.js with Express for RESTful APIs.
 - **Database:** MongoDB (Mongoose for object modeling).
 - **Real-Time Communication:** Socket.IO.
